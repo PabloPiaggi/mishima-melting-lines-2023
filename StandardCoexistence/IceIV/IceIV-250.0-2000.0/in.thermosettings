@@ -1,0 +1,12 @@
+variable        pressure equal 2000.0
+variable        pressureDamp1 equal 10.0 # This is 10 ps
+variable        pressureDamp2 equal 1.0 # This is 1 ps
+variable        temperature equal 250.0
+variable        tempDamp equal 0.1
+variable	seed1 world 17724
+variable	seed2 world 27724
+variable	seed3 world 37724
+variable	seed4 world 47724
+variable	seed5 world 57724
+variable	seed6 world 67724
+variable	seed7 world 77724

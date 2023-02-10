@@ -1,0 +1,4 @@
+First the equilibrium size of the solid is determined with: 270K-4000bar-BulkSolid
+This values are used for the interface and equilibrated in: 270K-4000bar-Equilibrate
+The final equilibrated configuration is used as input in BASE
+BASE performs another short equilibration before starting

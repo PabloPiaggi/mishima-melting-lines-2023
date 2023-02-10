@@ -1,0 +1,6 @@
+set xlabel "Time (ps)"
+set ylabel "# of ice V-like molecules"
+set yr [310:390]
+pl "COLVAR" u 1:4 w l
+
+pause -1

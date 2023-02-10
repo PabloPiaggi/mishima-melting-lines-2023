@@ -1,0 +1,4 @@
+pl "Liquid-310K-1bar/histo" u 1:2 w l
+repl "IceXIII/histo" u 1:2 w l
+
+pause -1

@@ -1,0 +1,33 @@
+# bulk water
+
+timer 		timeout 71:30:00 every 1000
+read_restart   	restart.inter
+variable 	stopstep equal 50000000
+
+neighbor        2.0 bin
+neigh_modify    every 10 delay 0 check no
+
+mass 		1 16
+mass		2 2
+
+pair_style	deepmd graph.pb 
+pair_coeff	
+
+include		in.thermosettings
+
+fix             1 all nph x ${pressure} ${pressure} ${pressureDamp2}
+fix             2 all temp/csvr ${temperature} ${temperature} ${tempDamp} ${seed7}
+fix		3 all momentum 100 linear 1 1 1 rescale
+timestep        0.0005
+
+thermo_style    custom step pe ke etotal temp pxx pyy pzz press lx ly lz vol
+thermo          1000
+fix 		thermo_print all print 1000 "$(step) $(pe) $(ke) $(etotal) $(temp) $(pxx) $(pyy) $(pzz) $(press) $(lx) $(ly) $(lz) $(vol)" append thermo.sample.out screen no title "#step pe ke etotal temp pxx pyy pzz press lx ly lz vol"
+dump		1 all custom 10000 water.dump.sample id type x y z 
+dump_modify	1 sort id append yes
+
+run             $(v_stopstep) upto
+write_restart   restart.inter
+write_data   	water.data.inter
+
+if "$(step) >= $(v_stopstep)" then "print $(step) file Sampledone.txt"

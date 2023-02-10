@@ -1,0 +1,50 @@
+# bulk water
+
+read_restart   	restart.inter
+
+include		in.thermosettings
+include 	in.Pinit #variable	Pinit equal PINIT
+variable	nsteps equal ($(v_Pinit)-$(v_Pfinal))/$(v_dP) 
+variable	loopVar loop 0 ${nsteps}
+variable	Pcurr equal $(v_Pinit)-$(v_dP)*$(v_loopVar)
+
+neighbor        2.0 bin
+neigh_modify    every 10 delay 0 check no
+
+mass 		1 16
+mass		2 2
+
+pair_style	deepmd graph.pb 
+pair_coeff	
+
+fix             2 all temp/csvr ${temperature} ${temperature} ${tempDamp} ${seed3}
+fix		3 all momentum 100 linear 1 1 1 rescale
+
+timestep        0.0005
+
+thermo_style    custom step v_Pcurr pe ke etotal temp pxx pyy pzz pxy pxz pyz press lx ly lz xy xz yz vol
+thermo          1000
+fix 		thermo_print all print 1000 "$(step) $(v_Pcurr) $(pe) $(ke) $(etotal) $(temp) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz) $(press) $(lx) $(ly) $(lz) $(xy) $(xz) $(yz) $(vol)" append thermo.sample.out screen no title "#step Pcurr pe ke etotal temp pxx pyy pzz pxy pxz pyz press lx ly lz xy xz yz vol"
+dump		1 all custom 1000 water.dump.sample id type x y z 
+dump_modify	1 sort id append yes
+
+# Loop
+label		loop
+variable	Pcurr equal $(v_Pinit)-$(v_dP)*$(v_loopVar)
+print 		"variable	Pinit equal $(v_Pcurr)" file in.Pinit
+write_data 	data.inter
+write_restart 	restart.inter
+# Define integrator
+fix             1 all nph tri $(v_Pcurr) $(v_Pcurr) ${pressureDamp1} drag 1.0
+# Dump settings
+undump		1
+dump 		1 all custom 1000 water.$(v_Pcurr).lammpstrj id type x y z
+dump_modify 	1 sort id append no
+
+# NVT sampling
+run 		10000
+next		loopVar
+jump		SELF loop
+
+write_restart	restart.post
+print $(step) file Sampledone.txt

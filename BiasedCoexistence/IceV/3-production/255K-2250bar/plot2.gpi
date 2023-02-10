@@ -1,0 +1,6 @@
+set xlabel "# of ice V-like molecules"
+set ylabel "Free energy (kJ/mol)"
+set xr [320:380]
+pl "<tail -n 4000 COLVAR" u 4:(-$5) w p notitle
+
+pause -1

@@ -1,0 +1,9 @@
+variable        pressure equal PRESS.0
+variable        pressureDamp1 equal 10.0 # This is 10 ps
+variable	Pfinal equal PFINAL
+variable	dP equal 50 
+variable        temperature equal TEMP.0
+variable        tempDamp equal 0.1
+variable	seed1 world 1SEED
+variable	seed2 world 2SEED
+variable	seed3 world 3SEED

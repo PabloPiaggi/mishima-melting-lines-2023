@@ -1,0 +1,10 @@
+# This is a deepmd model
+# create groups
+group ox type 1
+group hy type 2
+
+mass 		1 16
+mass		2 2
+
+pair_style 	deepmd graph.pb
+pair_coeff	* *

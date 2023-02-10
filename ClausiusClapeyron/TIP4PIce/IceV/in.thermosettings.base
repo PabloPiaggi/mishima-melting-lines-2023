@@ -1,0 +1,5 @@
+variable        pressure equal PRESS
+variable        pressureDamp equal 1000.0
+variable        temperature equal TEMP
+variable        tempDamp equal 100.0
+variable        seed world SEED

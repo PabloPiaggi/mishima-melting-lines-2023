@@ -1,0 +1,52 @@
+# vim:ft=plumed
+
+ENVIRONMENTSIMILARITY ...
+ SPECIESA=1-1008:3
+ SPECIESB=1-1008
+ SIGMA=0.04
+ CRYSTAL_STRUCTURE=CUSTOM
+ LABEL=refcv
+ REFERENCE_1=EnvAll/env1.pdb
+ REFERENCE_2=EnvAll/env2.pdb
+ REFERENCE_3=EnvAll/env3.pdb
+ REFERENCE_4=EnvAll/env4.pdb
+ REFERENCE_5=EnvAll/env5.pdb
+ REFERENCE_6=EnvAll/env6.pdb
+ REFERENCE_7=EnvAll/env7.pdb
+ REFERENCE_8=EnvAll/env8.pdb
+ REFERENCE_9=EnvAll/env9.pdb
+ REFERENCE_10=EnvAll/env10.pdb
+ REFERENCE_11=EnvAll/env11.pdb
+ REFERENCE_12=EnvAll/env12.pdb
+ REFERENCE_13=EnvAll/env13.pdb
+ REFERENCE_14=EnvAll/env14.pdb
+ REFERENCE_15=EnvAll/env15.pdb
+ REFERENCE_16=EnvAll/env16.pdb
+ REFERENCE_17=EnvAll/env17.pdb
+ REFERENCE_18=EnvAll/env18.pdb
+ REFERENCE_19=EnvAll/env19.pdb
+ REFERENCE_20=EnvAll/env20.pdb
+ REFERENCE_21=EnvAll/env21.pdb
+ REFERENCE_22=EnvAll/env22.pdb
+ REFERENCE_23=EnvAll/env23.pdb
+ REFERENCE_24=EnvAll/env24.pdb
+ REFERENCE_25=EnvAll/env25.pdb
+ REFERENCE_26=EnvAll/env26.pdb
+ REFERENCE_27=EnvAll/env27.pdb
+ REFERENCE_28=EnvAll/env28.pdb
+ MORE_THAN={CUBIC D_0=0.29 D_MAX=0.85}
+ ATOM_NAMES_FILE=atom-names.pdb
+ MEAN
+... ENVIRONMENTSIMILARITY
+
+hh: HISTOGRAM ...
+   DATA=refcv
+   GRID_MIN=-0.5
+   GRID_MAX=2.0
+   GRID_BIN=1000
+   BANDWIDTH=0.01
+...
+
+DUMPGRID GRID=hh FILE=histo STRIDE=10
+
+PRINT STRIDE=500  ARG=* FILE=COLVAR

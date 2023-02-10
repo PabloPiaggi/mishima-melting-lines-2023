@@ -1,0 +1,41 @@
+# bulk water
+
+timer 		timeout 16:00:00 every 5000
+
+units           metal
+boundary        p p p
+atom_style      atomic
+
+neighbor        2.0 bin
+neigh_modify    every 10 delay 0 check no
+
+read_data	iceXIII.data
+
+mass 		1 16
+mass		2 2
+
+pair_style	deepmd graph.pb 
+pair_coeff	
+
+include		in.thermosettings
+
+timestep        0.0005
+thermo_style    custom step pe ke etotal temp pxx pyy pzz pxy pxz pyz press lx ly lz xy xz yz vol
+thermo          100
+fix 		thermo_print all print 100 "$(step) $(pe) $(ke) $(etotal) $(temp) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz) $(press) $(lx) $(ly) $(lz) $(xy) $(xz) $(yz) $(vol)" append thermo.out screen no title "#step pe ke etotal temp pxx pyy pzz pxy pxz pyz press lx ly lz xy xz yz vol"
+dump		1 all custom 1000 water.dump id type x y z 
+dump_modify	1 sort id append yes
+
+# equilibrate ice configuration to desired pressure
+fix             1 all nph tri ${pressure} ${pressure} ${pressureDamp1} drag 1.0
+fix             2 all temp/csvr ${temperature} ${temperature} ${tempDamp} ${seed1}
+fix		3 all momentum 100 linear 1 1 1 rescale
+
+velocity        all create ${temperature} ${seed2}
+
+run             500000
+
+write_restart   restart.iceequil
+write_data   	water.data.icequil
+
+print $(step) file Initdone.txt

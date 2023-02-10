@@ -1,0 +1,45 @@
+echo both
+
+include		in.partitions
+log             log.lammps.equil.${pid} append
+include		in.temp
+include		in.pressure
+include		in.seed
+units		metal
+atom_style	atomic
+read_data	water.data.interface
+include 	in.setup
+
+timer           timeout 23:30:00 every 1000
+
+fix 		thermo_print all print 100 "$(step) $(pe) $(ke) $(etotal) $(temp) $(pxx) $(pyy) $(pzz) $(pxy) $(pxz) $(pyz) $(press) $(lx) $(ly) $(lz) $(xy) $(xz) $(yz) $(vol)" append thermo.equil.out screen no title "#step pe ke etotal temp pxx pyy pzz pxy pxz pyz press lx ly lz xy xz yz vol"
+dump            myDumpEquil all atom ${out_freq2} dump.water.equil.${pid}
+
+# Equilibrate slab configuration in nvt
+fix             1 all nve
+fix             2 all temp/csvr ${temperature} ${temperature} ${tempDamp} ${seed}
+fix		3 all momentum 10000 linear 1 1 1 rescale
+include		in.boxdimensions
+velocity        all create ${temperature} ${seed}
+
+run             20000 # 10 ps 
+
+unfix		1
+unfix		2
+unfix		3
+unfix           4 # fix deform defined in in.boxdimensions
+
+# Equilibrate slab configuration in npt in x
+
+fix             1 all plumed plumedfile plumed.equil.dat outfile plumed.equil.out
+fix             2 all nph x ${pressure} ${pressure} ${pressureDamp}
+fix             3 all temp/csvr ${temperature} ${temperature} ${tempDamp} ${seed}
+fix		4 all momentum 10000 linear 1 1 1 rescale
+
+run             500000 # 0.25 ns
+
+reset_timestep	0
+write_restart   restart.equil.${pid}
+write_data   	water.data.equil.${pid}
+
+print $(step) file Equildone.txt

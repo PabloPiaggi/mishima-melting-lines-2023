@@ -1,0 +1,24 @@
+echo both
+
+include		in.partitions
+include		in.temp
+include		in.pressure
+include		in.seed
+units		metal
+atom_style	atomic
+read_restart    restart.lmp
+include         in.setup
+
+timer           timeout 23:30:00 every 1000
+
+include         in.dump
+
+fix             1 all nph tri ${pressure} ${pressure} ${pressureDamp}
+fix             2 all temp/csvr ${temperature} ${temperature} ${tempDamp} ${seed}
+fix             3 all momentum 10000 linear 1 1 1 rescale
+
+run             100000 upto
+
+write_data	data.final
+
+write_restart   restart.lmp

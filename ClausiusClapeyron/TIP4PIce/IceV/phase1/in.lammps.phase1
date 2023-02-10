@@ -1,0 +1,56 @@
+# phase 1
+
+timer 		timeout 23:50:00 every 1000
+
+units           real
+boundary        p p p
+atom_style      full
+
+neigh_modify    delay 7 every 1
+
+read_data	water.data.phase1 nocoeff
+
+###############################################
+# This is TIP4P/Ice
+###############################################
+# create groups
+group 		ox type 2
+group 		hy type 1
+# set charges
+set 		group ox charge -1.1794
+set 		group hy charge 0.5897
+# set masses
+mass 		1 16
+mass		2 2
+# ### TIP4P/Ice Potential Parameters ###
+pair_style 	lj/cut/tip4p/long 2 1 1 1 0.1577 8.5
+pair_coeff 	1 1*2 0.000 0.000 
+pair_coeff 	2 2 0.21084 3.1668
+bond_style  	harmonic
+bond_coeff  	1 450 0.9572
+angle_style 	harmonic
+angle_coeff 	1 55 104.52
+kspace_style 	pppm/tip4p 1.0e-5
+pair_modify 	tail yes
+###############################################
+
+include		../in.thermosettings
+
+timestep	2.0
+
+thermo_style    custom step pe ke etotal temp pxx pyy pzz pxy pxz pyz press lx ly lz xy xz yz vol
+thermo          100
+fix 		thermo_print all print 10 "$(step) $(enthalpy) $(vol)" file thermo.phase1 screen no title "#step enthalpy vol"
+dump		1 all custom 10000 dump.phase1 id type x y z 
+
+# equilibrate ice configuration to desired pressure
+fix 		1 all shake 1e-6 200 0 b 1 a 1
+fix             2 all nph tri ${pressure} ${pressure} ${pressureDamp}
+fix             3 all temp/csvr ${temperature} ${temperature} ${tempDamp} ${seed}
+fix		4 all momentum 10000 linear 1 1 1 rescale
+
+velocity        all create ${temperature} ${seed}
+
+run             50000000 # 100 ns
+
+write_data   	water.data.phase1 nocoeff

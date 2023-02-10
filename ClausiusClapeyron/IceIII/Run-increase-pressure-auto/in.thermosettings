@@ -1,0 +1,5 @@
+variable        pressure equal 4000.000000
+variable        pressureDamp equal 1.0
+variable        temperature equal 282.269705
+variable        tempDamp equal 0.1
+variable	seed world 16875

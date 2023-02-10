@@ -1,0 +1,125 @@
+# vim:ft=plumed
+
+RESTART NO
+
+ENVIRONMENTSIMILARITY ...
+ SPECIES=1-2016:3
+ SIGMA=0.04
+ CRYSTAL_STRUCTURE=CUSTOM
+ LABEL=refcv
+ REFERENCE_1=EnvOxygens/env1.pdb
+ REFERENCE_2=EnvOxygens/env2.pdb
+ REFERENCE_3=EnvOxygens/env3.pdb
+ REFERENCE_4=EnvOxygens/env4.pdb
+ REFERENCE_5=EnvOxygens/env5.pdb
+ REFERENCE_6=EnvOxygens/env6.pdb
+ REFERENCE_7=EnvOxygens/env7.pdb
+ REFERENCE_8=EnvOxygens/env8.pdb
+ REFERENCE_9=EnvOxygens/env9.pdb
+ REFERENCE_10=EnvOxygens/env10.pdb
+ REFERENCE_11=EnvOxygens/env11.pdb
+ REFERENCE_12=EnvOxygens/env12.pdb
+ REFERENCE_13=EnvOxygens/env13.pdb
+ REFERENCE_14=EnvOxygens/env14.pdb
+ REFERENCE_15=EnvOxygens/env15.pdb
+ REFERENCE_16=EnvOxygens/env16.pdb
+ REFERENCE_17=EnvOxygens/env17.pdb
+ REFERENCE_18=EnvOxygens/env18.pdb
+ REFERENCE_19=EnvOxygens/env19.pdb
+ REFERENCE_20=EnvOxygens/env20.pdb
+ REFERENCE_21=EnvOxygens/env21.pdb
+ REFERENCE_22=EnvOxygens/env22.pdb
+ REFERENCE_23=EnvOxygens/env23.pdb
+ REFERENCE_24=EnvOxygens/env24.pdb
+ REFERENCE_25=EnvOxygens/env25.pdb
+ REFERENCE_26=EnvOxygens/env26.pdb
+ REFERENCE_27=EnvOxygens/env27.pdb
+ REFERENCE_28=EnvOxygens/env28.pdb
+ MORE_THAN={CUBIC D_0=0.19 D_MAX=0.83}
+ MEAN
+... ENVIRONMENTSIMILARITY
+
+ENVIRONMENTSIMILARITY ...
+ SPECIESA=1-2016:3
+ SPECIESB=2-2016:3,3-2016:3
+ SIGMA=0.04
+ CRYSTAL_STRUCTURE=CUSTOM
+ LABEL=refcv2
+ REFERENCE_1=EnvProtons/env1.pdb
+ REFERENCE_2=EnvProtons/env2.pdb
+ REFERENCE_3=EnvProtons/env3.pdb
+ REFERENCE_4=EnvProtons/env4.pdb
+ REFERENCE_5=EnvProtons/env5.pdb
+ REFERENCE_6=EnvProtons/env6.pdb
+ REFERENCE_7=EnvProtons/env7.pdb
+ REFERENCE_8=EnvProtons/env8.pdb
+ REFERENCE_9=EnvProtons/env9.pdb
+ REFERENCE_10=EnvProtons/env10.pdb
+ REFERENCE_11=EnvProtons/env11.pdb
+ REFERENCE_12=EnvProtons/env12.pdb
+ REFERENCE_13=EnvProtons/env13.pdb
+ REFERENCE_14=EnvProtons/env14.pdb
+ REFERENCE_15=EnvProtons/env15.pdb
+ REFERENCE_16=EnvProtons/env16.pdb
+ REFERENCE_17=EnvProtons/env17.pdb
+ REFERENCE_18=EnvProtons/env18.pdb
+ REFERENCE_19=EnvProtons/env19.pdb
+ REFERENCE_20=EnvProtons/env20.pdb
+ REFERENCE_21=EnvProtons/env21.pdb
+ REFERENCE_22=EnvProtons/env22.pdb
+ REFERENCE_23=EnvProtons/env23.pdb
+ REFERENCE_24=EnvProtons/env24.pdb
+ REFERENCE_25=EnvProtons/env25.pdb
+ REFERENCE_26=EnvProtons/env26.pdb
+ REFERENCE_27=EnvProtons/env27.pdb
+ REFERENCE_28=EnvProtons/env28.pdb
+ MORE_THAN={CUBIC D_0=0.60 D_MAX=0.86}
+ MEAN
+... ENVIRONMENTSIMILARITY
+
+ENVIRONMENTSIMILARITY ...
+ SPECIESA=1-2016:3
+ SPECIESB=1-2016
+ SIGMA=0.04
+ CRYSTAL_STRUCTURE=CUSTOM
+ LABEL=refcv3
+ REFERENCE_1=EnvAll/env1.pdb
+ REFERENCE_2=EnvAll/env2.pdb
+ REFERENCE_3=EnvAll/env3.pdb
+ REFERENCE_4=EnvAll/env4.pdb
+ REFERENCE_5=EnvAll/env5.pdb
+ REFERENCE_6=EnvAll/env6.pdb
+ REFERENCE_7=EnvAll/env7.pdb
+ REFERENCE_8=EnvAll/env8.pdb
+ REFERENCE_9=EnvAll/env9.pdb
+ REFERENCE_10=EnvAll/env10.pdb
+ REFERENCE_11=EnvAll/env11.pdb
+ REFERENCE_12=EnvAll/env12.pdb
+ REFERENCE_13=EnvAll/env13.pdb
+ REFERENCE_14=EnvAll/env14.pdb
+ REFERENCE_15=EnvAll/env15.pdb
+ REFERENCE_16=EnvAll/env16.pdb
+ REFERENCE_17=EnvAll/env17.pdb
+ REFERENCE_18=EnvAll/env18.pdb
+ REFERENCE_19=EnvAll/env19.pdb
+ REFERENCE_20=EnvAll/env20.pdb
+ REFERENCE_21=EnvAll/env21.pdb
+ REFERENCE_22=EnvAll/env22.pdb
+ REFERENCE_23=EnvAll/env23.pdb
+ REFERENCE_24=EnvAll/env24.pdb
+ REFERENCE_25=EnvAll/env25.pdb
+ REFERENCE_26=EnvAll/env26.pdb
+ REFERENCE_27=EnvAll/env27.pdb
+ REFERENCE_28=EnvAll/env28.pdb
+ MORE_THAN={CUBIC D_0=0.29 D_MAX=0.85}
+ ATOM_NAMES_FILE=atom-names.pdb
+ MEAN
+... ENVIRONMENTSIMILARITY
+
+umb1: ECV_UMBRELLAS_LINE ARG=refcv3.morethan TEMP=300 CV_MIN=320.0 CV_MAX=380.0 SIGMA=1 BARRIER=100
+opes: OPES_EXPANDED ARG=umb1.* PACE=500 STRIDE=5 WALKERS_MPI
+
+diff: CUSTOM ARG=refcv.morethan,refcv3.morethan FUNC=y-x PERIODIC=NO 
+restraint: RESTRAINT ARG=diff AT=0.0 KAPPA=0.5  STRIDE=5
+
+PRINT STRIDE=500  ARG=* FILE=COLVAR
