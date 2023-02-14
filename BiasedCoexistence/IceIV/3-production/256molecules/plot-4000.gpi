@@ -1,5 +1,0 @@
-pl "IceIV-275.0-4000.0/COLVAR.0" u 1:2 w p
-repl "IceIV-280.0-4000.0/COLVAR.0" u 1:2 w p
-repl "IceIV-285.0-4000.0/COLVAR.0" u 1:2 w p
-
-pause -1

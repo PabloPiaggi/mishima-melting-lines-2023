@@ -1,2 +1,0 @@
-variable        pressure equal PRESS
-variable        pressureDamp equal 1.0 # This is 1 ps
