@@ -15,8 +15,8 @@ Individual/auto indicates if the integration was performed automatically with si
 The latter option was used in regions of the (T,P) plane in which correlation times are very long. 
 For instance, some folders with this naming convention are:
 * ```IceV/Run-decrease-pressure-auto```
-* ```Run-decrease-pressure-individual```
-* ```Run-increase-pressure-auto``` 
+* ```IceV/Run-decrease-pressure-individual```
+* ```IceV/Run-increase-pressure-auto``` 
 
 The auto simulations and the numerical integration were handled by the Python script ```integrate-clausius-clapeyron.py```, for instance, in ```IceV/Run-decrease-pressure-auto/integrate-clausius-clapeyron.py```.
 The individual simulations and the numerical integration were handled by the bash script ```next_step.sh``` and the Python script ```next_rk_step.py```, which can be bound for instance in ```IceV/Run-decrease-pressure-individual/next_step.sh``` and ```IceV/Run-decrease-pressure-individual/step-base/next_rk_step.py```.
