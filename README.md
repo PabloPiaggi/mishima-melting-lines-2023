@@ -3,7 +3,7 @@
 ### Authors: Pablo M. Piaggi, Thomas E. Gartner III, Roberto Car, Pablo G. Debenedetti
 
 [![plumID:23.004](https://www.plumed-nest.org/eggs/23/004/badge.svg)](https://www.plumed-nest.org/eggs/23/004/)
-
+[![DataSpace](https://img.shields.io/badge/DataSpace-88435%2Fdsp01gt54kr255-orange)](https://doi.org/10.34770/pbja-we49)
 
 Analysis and input files to reproduce simulations of manuscript "Melting curves of ice polymorphs in the vicinity of the liquid-liquid critical point" by Piaggi, Gartner, Car, and Debenedetti.
 
